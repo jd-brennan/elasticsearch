@@ -23,6 +23,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import org.elasticsearch.gradle.AntTask
 import org.elasticsearch.gradle.LoggedExec
 import org.gradle.api.GradleException
+import org.gradle.api.tasks.Internal
 import org.gradle.api.Task
 import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.Input
@@ -38,7 +39,6 @@ public class AntFixture extends AntTask implements Fixture {
 
     private final List<Object> arguments = new ArrayList<>()
 
-    @Input
     public void args(Object... args) {
         arguments.addAll(args)
     }
@@ -49,7 +49,6 @@ public class AntFixture extends AntTask implements Fixture {
      */
     private final Map<String, Object> environment = new HashMap<>()
 
-    @Input
     public void env(String key, Object value) {
         environment.put(key, value)
     }
@@ -69,6 +68,7 @@ public class AntFixture extends AntTask implements Fixture {
      * as well as a groovy AntBuilder, to enable running ant condition checks. The default wait
      * condition is for http on the http port.
      */
+    @Internal
     Closure waitCondition = { AntFixture fixture, AntBuilder ant ->
         File tmpFile = new File(fixture.cwd, 'wait.success')
         ant.get(src: "http://${fixture.addressAndPort}",
@@ -86,6 +86,7 @@ public class AntFixture extends AntTask implements Fixture {
     }
 
     @Override
+    @Internal
     public Task getStopTask() {
         return stopTask
     }
@@ -165,6 +166,7 @@ public class AntFixture extends AntTask implements Fixture {
     }
 
     /** Returns a debug string used to log information about how the fixture was run. */
+    @Internal
     protected String getCommandString() {
         String commandString = "\n${name} configuration:\n"
         commandString += "-----------------------------------------\n"
@@ -244,46 +246,55 @@ public class AntFixture extends AntTask implements Fixture {
      * A path relative to the build dir that all configuration and runtime files
      * will live in for this fixture
      */
+    @Internal
     protected File getBaseDir() {
         return new File(project.buildDir, "fixtures/${name}")
     }
 
     /** Returns the working directory for the process. Defaults to "cwd" inside baseDir. */
+    @Internal
     protected File getCwd() {
         return new File(baseDir, 'cwd')
     }
 
     /** Returns the file the process writes its pid to. Defaults to "pid" inside baseDir. */
+    @Internal
     protected File getPidFile() {
         return new File(baseDir, 'pid')
     }
 
     /** Reads the pid file and returns the process' pid */
+    @Internal
     public int getPid() {
         return Integer.parseInt(pidFile.getText('UTF-8').trim())
     }
 
     /** Returns the file the process writes its bound ports to. Defaults to "ports" inside baseDir. */
+    @Internal
     protected File getPortsFile() {
         return new File(baseDir, 'ports')
     }
 
     /** Returns an address and port suitable for a uri to connect to this node over http */
-    public String getAddressAndPort() {
+    @Internal
+    String getAddressAndPort() {
         return portsFile.readLines("UTF-8").get(0)
     }
 
     /** Returns a file that wraps around the actual command when {@code spawn == true}. */
+    @Internal
     protected File getWrapperScript() {
         return new File(cwd, Os.isFamily(Os.FAMILY_WINDOWS) ? 'run.bat' : 'run')
     }
 
     /** Returns a file that the wrapper script writes when the command failed. */
+    @Internal
     protected File getFailureMarker() {
         return new File(cwd, 'run.failed')
     }
 
     /** Returns a file that the wrapper script writes when the command failed. */
+    @Internal
     protected File getRunLog() {
         return new File(cwd, 'run.log')
     }

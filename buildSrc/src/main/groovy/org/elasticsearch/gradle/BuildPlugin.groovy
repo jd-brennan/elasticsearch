@@ -264,7 +264,7 @@ class BuildPlugin implements Plugin<Project> {
             final List<String> maybeDockerBinaries = ['/usr/bin/docker', '/usr/local/bin/docker']
             final String dockerBinary = maybeDockerBinaries.find { it -> new File(it).exists() }
 
-            final boolean buildDocker
+            boolean buildDocker = false
             final String buildDockerProperty = System.getProperty("build.docker")
             if (buildDockerProperty == null) {
                 buildDocker = dockerBinary != null
