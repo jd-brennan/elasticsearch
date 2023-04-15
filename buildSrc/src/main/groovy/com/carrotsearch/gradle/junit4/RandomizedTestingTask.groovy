@@ -16,6 +16,7 @@ import org.gradle.api.file.FileTreeElement
 import org.gradle.api.specs.Spec
 import org.gradle.api.tasks.Classpath
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
@@ -33,8 +34,7 @@ class RandomizedTestingTask extends DefaultTask {
     @Input
     String jvm = 'java'
 
-    @Optional
-    @Input
+    @Internal
     File workingDir = new File(project.buildDir, 'testrun' + File.separator + name)
 
     @Optional
@@ -44,26 +44,21 @@ class RandomizedTestingTask extends DefaultTask {
     @Input
     String parallelism = '1'
 
-    @Input
+    @Internal
     FileCollection testClassesDirs
 
-    @Optional
     @Input
     boolean haltOnFailure = true
 
-    @Optional
     @Input
     boolean shuffleOnSlave = true
 
-    @Optional
     @Input
     boolean enableAssertions = true
 
-    @Optional
     @Input
     boolean enableSystemAssertions = true
 
-    @Optional
     @Input
     boolean leaveTemporary = false
 
@@ -75,19 +70,26 @@ class RandomizedTestingTask extends DefaultTask {
     @Input
     String onNonEmptyWorkDirectory = 'fail'
 
+    @Internal
     TestLoggingConfiguration testLoggingConfig = new TestLoggingConfiguration()
 
+    @Internal
     BalancersConfiguration balancersConfig = new BalancersConfiguration(task: this)
+    @Internal
     ListenersConfiguration listenersConfig = new ListenersConfiguration(task: this)
 
+    @Internal
     List<String> jvmArgs = new ArrayList<>()
 
     @Optional
     @Input
     String argLine = null
 
+    @Internal
     Map<String, Object> systemProperties = new HashMap<>()
+    @Internal
     Map<String, Object> environmentVariables = new HashMap<>()
+    @Internal
     PatternFilterable patternSet = new PatternSet()
 
     RandomizedTestingTask() {
@@ -149,17 +151,14 @@ class RandomizedTestingTask extends DefaultTask {
         this.patternSet.exclude(excludeSpec);
     }
 
-    @Input
     void testLogging(Closure closure) {
         ConfigureUtil.configure(closure, testLoggingConfig)
     }
 
-    @Input
     void balancers(Closure closure) {
         ConfigureUtil.configure(closure, balancersConfig)
     }
 
-    @Input
     void listeners(Closure closure) {
         ConfigureUtil.configure(closure, listenersConfig)
     }

@@ -22,12 +22,14 @@ import org.elasticsearch.gradle.VersionProperties
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Task
 import org.gradle.api.tasks.Copy
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 /**
  * Creates a plugin descriptor.
  */
 class PluginPropertiesTask extends Copy {
 
+    @Internal
     PluginPropertiesExtension extension
 
     @OutputFile

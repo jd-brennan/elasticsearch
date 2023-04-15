@@ -85,8 +85,6 @@ public class ForbiddenPatternsTask extends DefaultTask {
         patterns.put("tab", "\t");
     }
 
-    @InputFiles
-    @SkipWhenEmpty
     public FileCollection files() {
         return getProject().getConvention().getPlugin(JavaPluginConvention.class).getSourceSets()
             .stream()

@@ -25,6 +25,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.artifacts.DependencyResolutionListener
 import org.gradle.api.artifacts.DependencySet
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputFile
@@ -48,19 +49,23 @@ import java.util.regex.Pattern
 public class DependenciesInfoTask extends DefaultTask {
 
     /** Dependencies to gather information from. */
-    @Input
+    @Internal
     public Configuration runtimeConfiguration
+    Configuration getRuntimeConfiguration() { return runtimeConfiguration }
 
     /** We subtract compile-only dependencies. */
-    @Input
+    @Internal
     public Configuration compileOnlyConfiguration
+    Configuration getCompileOnlyConfiguration() { return compileOnlyConfiguration }
 
     @Input
     public LinkedHashMap<String, String> mappings
+    LinkedHashMap<String, String> getMappings() { return mappings }
 
     /** Directory to read license files */
     @InputDirectory
     public File licensesDir = new File(project.projectDir, 'licenses')
+    File getLicensesDir() { return licensesDir }
 
     @OutputFile
     File outputFile = new File(project.buildDir, "reports/dependencies/dependencies.csv")

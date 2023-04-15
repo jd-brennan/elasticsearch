@@ -60,13 +60,7 @@ public class ExportElasticsearchBuildResourcesTask extends DefaultTask {
         outputDir.set(new File(getProject().getBuildDir(), "build-tools-exported"));
     }
 
-    @OutputDirectory
-    public DirectoryProperty getOutputDir() {
-        return outputDir;
-    }
-
     @Input
-    @SkipWhenEmpty
     public Set<String> getResources() {
         return Collections.unmodifiableSet(resources);
     }
@@ -76,10 +70,6 @@ public class ExportElasticsearchBuildResourcesTask extends DefaultTask {
         // This will make sure the task is not considered up to date if the resources are changed.
         logger.info("Classpath: {}", System.getProperty("java.class.path"));
         return System.getProperty("java.class.path");
-    }
-
-    public void setOutputDir(DirectoryProperty outputDir) {
-        this.outputDir = outputDir;
     }
 
     public File copy(String resource) {

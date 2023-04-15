@@ -23,7 +23,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
 
@@ -76,14 +76,13 @@ public class DependencyLicensesTask extends DefaultTask {
     // TODO: we should be able to default this to eg compile deps, but we need to move the licenses
     // check from distribution to core (ie this should only be run on java projects)
     /** A collection of jar files that should be checked. */
-    @InputFiles
     public FileCollection dependencies
 
     /** The directory to find the license and sha files in. */
-    @InputDirectory
     public File licensesDir = new File(project.projectDir, 'licenses')
 
     /** A map of patterns to prefix, used to find the LICENSE and NOTICE file. */
+    @Internal
     private LinkedHashMap<String, String> mappings = new LinkedHashMap<>()
 
     /** Names of dependencies whose shas should not exist. */
@@ -93,7 +92,6 @@ public class DependencyLicensesTask extends DefaultTask {
      * Add a mapping from a regex pattern for the jar name, to a prefix to find
      * the LICENSE and NOTICE file for that jar.
      */
-    @Input
     public void mapping(Map<String, String> props) {
         String from = props.remove('from')
         if (from == null) {
@@ -117,7 +115,6 @@ public class DependencyLicensesTask extends DefaultTask {
      * Add a rule which will skip SHA checking for the given dependency name. This should be used for
      * locally build dependencies, which cause the sha to change constantly.
      */
-    @Input
     public void ignoreSha(String dep) {
         ignoreShas.add(dep)
     }

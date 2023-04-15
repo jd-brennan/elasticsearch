@@ -25,6 +25,7 @@ import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionAdapter
 import org.gradle.api.tasks.Copy
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskState
 import org.gradle.api.tasks.options.Option
 import org.gradle.plugins.ide.idea.IdeaPlugin
@@ -44,6 +45,7 @@ public class RestIntegTestTask extends DefaultTask {
     protected Task clusterInit
 
     /** Info about nodes in the integ test cluster. Note this is *not* available until runtime. */
+    @Internal
     List<NodeInfo> nodes
 
     /** Flag indicating whether the rest tests in the rest spec should be run. */

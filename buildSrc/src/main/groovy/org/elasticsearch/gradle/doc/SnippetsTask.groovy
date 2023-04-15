@@ -27,6 +27,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
 
@@ -51,6 +52,7 @@ public class SnippetsTask extends DefaultTask {
      * Action to take on each snippet. Called with a single parameter, an
      * instance of Snippet.
      */
+    @Internal
     Closure perSnippet
 
     /**

@@ -20,12 +20,14 @@ package org.elasticsearch.gradle.test
 
 import org.elasticsearch.gradle.vagrant.VagrantCommandTask
 import org.gradle.api.Task
+import org.gradle.api.tasks.Internal
 
 /**
  * A fixture for integration tests which runs in a virtual machine launched by Vagrant.
  */
 class VagrantFixture extends VagrantCommandTask implements Fixture {
 
+    @Internal
     private VagrantCommandTask stopTask
 
     public VagrantFixture() {
